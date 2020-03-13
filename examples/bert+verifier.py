@@ -6,8 +6,8 @@ import json
 nltk.download('punkt')
 sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
 
-data = json.load("~/224nfinalproject/data/dev-v2.0.json")["data"]
-qamodel = json.load("~/224finaltransformers/examples/outputs/albertforqa/nbest_predictions_.json")
+data = json.load('~/224nfinalproject/data/dev-v2.0.json')["data"]
+qamodel = json.load('~/224finaltransformers/examples/outputs/albertforqa/nbest_predictions_.json')
 verifiertokenizer = AlbertTokenizer.from_pretrained('~/224finaltransformers/examples/outputs/albertforsqc')
 verifiermodel = AlbertForSequenceClassification.from_pretrained('~/224finaltransformers/examples/outputs/albertforsqc')
 
