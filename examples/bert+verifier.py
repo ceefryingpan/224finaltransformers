@@ -2,6 +2,7 @@ from transformers import AlbertTokenizer, AlbertForQuestionAnswering, AlbertForS
 import torch
 import nltk
 import json
+import csv
 import os
 
 nltk.download('punkt')
@@ -14,6 +15,10 @@ with open(os.path.expanduser('~/224finaltransformers/examples/output/albertforqa
     qamodel = json.load(verifier)
 verifiertokenizer = AlbertTokenizer.from_pretrained(os.path.expanduser('~/224finaltransformers/examples/output/albertforsqc'))
 verifiermodel = AlbertForSequenceClassification.from_pretrained(os.path.expanduser('~/224finaltransformers/examples/output/albertforsqc'))
+
+filename = "dev_outputs.csv"
+with open(filename, 'w') as csvfile:
+    csvwriter
 
 def answerandprob(qamodelanswers):
     bestanswer = qamodelanswers[0]
@@ -52,27 +57,35 @@ def snipcontext(context, answer):
                 break
     return context_sent
 
-for topic in data:
-    for paragraph in topic["paragraphs"]:
-        context = paragraph["context"]
-        for qa in paragraph["qas"]:
-            id = qa["id"]
-            question = qa["question"]
+fields = ['ID', 'Predicted']
+filename = "dev_outputs.csv"
+with open(filename, 'w') as csvfile:
+    csvwriter = csv.writer(csvfile)
+    csvwriter.writerow(fields)
+    for topic in data:
+        for paragraph in topic["paragraphs"]:
+            context = paragraph["context"]
+            for qa in paragraph["qas"]:
+                id = qa["id"]
+                question = qa["question"]
 
-            qamodelanswers = qamodel[id]
-            answer, noansprob_para = answerandprob(qamodelanswers)
+                qamodelanswers = qamodel[id]
+                answer, noansprob_para = answerandprob(qamodelanswers)
 
-            context_sent = snipcontext(context, answer)
+                context_sent = snipcontext(context, answer)
 
-            classes = ["no answer", "has answer"]
+                classes = ["no answer", "has answer"]
 
-            sequence_0 = question # question
-            sequence_1 = context_sent # snipped context
+                sequence_0 = question # question
+                sequence_1 = context_sent # snipped context
 
-            has_answer = verifiertokenizer.encode_plus(sequence_0, sequence_1, return_tensors="pt")
-            has_answer_classification_logits = verifiermodel(**has_answer)[0]
-            has_answer_results = torch.softmax(has_answer_classification_logits, dim=1).tolist()[0]
+                has_answer = verifiertokenizer.encode_plus(sequence_0, sequence_1, return_tensors="pt")
+                has_answer_classification_logits = verifiermodel(**has_answer)[0]
+                has_answer_results = torch.softmax(has_answer_classification_logits, dim=1).tolist()[0]
 
-            noansprob_sent = has_answer_results[0]
+                noansprob_sent = has_answer_results[0]
 
-            print("answer: {}, no answer prob paragraph: {}, no answer prob sentence: {}".format(answer, noansprob_para, noansprob_sent))
+                if noansprob_para < 0.5 and noansprob_sent < 0.5:
+                    csvwriter.writerow([id, answer])
+                else:
+                    csvwriter.writerow([id, ""])
