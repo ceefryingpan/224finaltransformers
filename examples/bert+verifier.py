@@ -16,10 +16,6 @@ with open(os.path.expanduser('~/224finaltransformers/examples/output/albertforqa
 verifiertokenizer = AlbertTokenizer.from_pretrained(os.path.expanduser('~/224finaltransformers/examples/output/albertforsqc'))
 verifiermodel = AlbertForSequenceClassification.from_pretrained(os.path.expanduser('~/224finaltransformers/examples/output/albertforsqc'))
 
-filename = "dev_outputs.csv"
-with open(filename, 'w') as csvfile:
-    csvwriter
-
 def answerandprob(qamodelanswers):
     bestanswer = qamodelanswers[0]
     noansprob = 0.0
