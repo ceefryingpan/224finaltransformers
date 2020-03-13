@@ -30,6 +30,7 @@ def answerandprob(qamodelanswers):
     return bestanswer["text"], noansprob
 
 def snipcontext(context, answer):
+    index = context.find(answer)
     context_list = sent_detector.tokenize(context.strip())
     chars_seen = 0
     context_sent = ''
