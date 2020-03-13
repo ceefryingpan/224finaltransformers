@@ -70,7 +70,7 @@ for topic in data:
             sequence_1 = context_sent # snipped context
 
             has_answer = verifiertokenizer.encode_plus(sequence_0, sequence_1, return_tensors="pt")
-            has_answer_classification_logits = model(**has_answer)[0]
+            has_answer_classification_logits = verifiermodel(**has_answer)[0]
             has_answer_results = torch.softmax(has_answer_classification_logits, dim=1).tolist()[0]
 
             noansprob_sent = has_answer_results[0]
