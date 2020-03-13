@@ -53,7 +53,7 @@ def snipcontext(context, answer):
                 break
     return context_sent
 
-fields = ['ID', 'Predicted']
+fields = ['Id', 'Predicted']
 filename = "dev_outputs.csv"
 with open(filename, 'w') as csvfile:
     csvwriter = csv.writer(csvfile)
@@ -81,7 +81,7 @@ with open(filename, 'w') as csvfile:
 
                 noansprob_sent = has_answer_results[0]
 
-                if noansprob_para < 0.5 and noansprob_sent < 0.5:
+                if (noansprob_para + noansprob_sent) < 1:
                     csvwriter.writerow([id, answer])
                 else:
                     csvwriter.writerow([id, ""])
