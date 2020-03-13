@@ -58,6 +58,7 @@ filename = "dev_outputs.csv"
 with open(filename, 'w') as csvfile:
     csvwriter = csv.writer(csvfile)
     csvwriter.writerow(fields)
+    count = 1
     for topic in data:
         for paragraph in topic["paragraphs"]:
             context = paragraph["context"]
@@ -85,3 +86,6 @@ with open(filename, 'w') as csvfile:
                     csvwriter.writerow([id, answer])
                 else:
                     csvwriter.writerow([id, ""])
+
+                print("Done with example number {}".format(count))
+                count += 1
