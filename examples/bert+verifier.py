@@ -8,11 +8,11 @@ nltk.download('punkt')
 sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
 
 with open(
-    os.path.join('/~/224nfinalproject/data/', 'dev-v2.0.json'), "r", encoding="utf-8"
+    os.path.join('~/224nfinalproject/data/', 'dev-v2.0.json'), "r", encoding="utf-8"
 ) as reader:
     data = json.load(reader)["data"]
 with open(
-    os.path.join('/~/224finaltransformers/examples/outputs/albertforqa/', 'nbest_predictions_.json'), "r", encoding="utf-8"
+    os.path.join('~/224finaltransformers/examples/outputs/albertforqa/', 'nbest_predictions_.json'), "r", encoding="utf-8"
 ) as verifier:
     qamodel = json.load(verifier)
 verifiertokenizer = AlbertTokenizer.from_pretrained('~/224finaltransformers/examples/outputs/albertforsqc')
