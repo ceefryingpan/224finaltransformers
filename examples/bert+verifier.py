@@ -5,10 +5,10 @@ import nltk
 nltk.download('punkt')
 sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
 
-data = json.load("dev-v2.0.json")["data"]
-qamodel = json.load("nbest_predictions_.json")
-verifiertokenizer = AlbertTokenizer.from_pretrained('./tmp/albertverifier')
-verifiermodel = AlbertForSequenceClassification.from_pretrained('./tmp/albertverifier')
+data = json.load("~/224nfinalproject/data/dev-v2.0.json")["data"]
+qamodel = json.load("~/224finaltransformers/examples/outputs/albertforqa/nbest_predictions_.json")
+verifiertokenizer = AlbertTokenizer.from_pretrained('~/224finaltransformers/examples/outputs/albertforsqc')
+verifiermodel = AlbertForSequenceClassification.from_pretrained('~/224finaltransformers/examples/outputs/albertforsqc')
 
 def answerandprob(qamodelanswers):
     bestanswer = qamodelanswers[0]
