@@ -2,12 +2,19 @@ from transformers import AlbertTokenizer, AlbertForQuestionAnswering, AlbertForS
 import torch
 import nltk
 import json
+import os
 
 nltk.download('punkt')
 sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
 
-data = json.load('~/224nfinalproject/data/dev-v2.0.json')["data"]
-qamodel = json.load('~/224finaltransformers/examples/outputs/albertforqa/nbest_predictions_.json')
+with open(
+    os.path.join('~/224nfinalproject/data/dev-v2.0.json'), "r", encoding="utf-8"
+) as reader:
+    data = json.load(reader)["data"]
+with open(
+    os.path.join('~/224finaltransformers/examples/outputs/albertforqa/nbest_predictions_.json'), "r", encoding="utf-8"
+) as verifier:
+    qamodel = json.load(verifier)
 verifiertokenizer = AlbertTokenizer.from_pretrained('~/224finaltransformers/examples/outputs/albertforsqc')
 verifiermodel = AlbertForSequenceClassification.from_pretrained('~/224finaltransformers/examples/outputs/albertforsqc')
 
